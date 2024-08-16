@@ -94,7 +94,8 @@ router.get("/posts/:id/edit", async function (req, res) {
 
 router.get("/posts/:id/edit", async function (req, res) {
   const postId = new ObjectId(req.params.id);
-  const result = await db.getDb()
+  const result = await db
+    .getDb()
     .collection("posts")
     .updateOne(
       { _id: postId },
@@ -103,12 +104,22 @@ router.get("/posts/:id/edit", async function (req, res) {
           title: req.body.title,
           summary: req.body.summary,
           body: req.body.content,
-          date: new Date()
+          date: new Date(),
         },
       }
     );
 
-    res.redirect('/posts');
+  res.redirect("/posts");
+});
+
+router.post("/posts/:id/delete", async function (req, res) {
+  const postId = new ObjectId(req.params.id);
+  const result = await db
+    .getDb()
+    .collection("posts")
+    .deleteOne({ _id: postId });
+
+  res.redirect('/posts');
 });
 
 module.exports = router;
